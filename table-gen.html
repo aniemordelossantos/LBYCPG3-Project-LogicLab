@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>LogicLab - Table Gen</title>
+    <style>
+        /* Specific styles for the "Long Expressions" layout */
+        .table-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 1200px;
+            margin: 60px auto;
+            gap: 40px;
+        }
+
+        .controls-side {
+            flex: 1;
+            text-align: left;
+        }
+
+        .controls-side h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            font-weight: 800;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .input-card {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 24px;
+            padding: 30px;
+            margin-top: 30px;
+            max-width: 400px;
+        }
+
+        .expression-input {
+            background: #1a1a1a;
+            color: white;
+            border: 1px solid #333;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            width: 100%;
+            margin-bottom: 20px;
+            outline: none;
+            font-family: monospace;
+        }
+
+        .btn-generate {
+            background: var(--neon-lime);
+            color: black;
+            border: none;
+            padding: 15px;
+            border-radius: 30px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .btn-generate:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        .table-card {
+            background: #0f0f0f;
+            border: 1px solid #1a1a1a;
+            border-radius: 30px;
+            padding: 40px;
+            flex: 1;
+            min-height: 400px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            color: #7a7a7a;
+            padding-bottom: 15px;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #222;
+        }
+
+        td {
+            padding: 12px 0;
+            font-size: 1.1rem;
+            color: white;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .res-cell { font-weight: bold; color: white; }
+        
+        .error-msg {
+            color: #ff4444;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="home.html" class="logo">LOGIC<span>LAB</span></a>
+        <div class="nav-links">
+            <a href="overview.html">OVERVIEW</a>
+            <a href="simulator.html">SIMULATOR</a>
+            <a href="table-gen.html" class="active">TABLE GEN</a>
+            <a href="expression-gen.html">EXPRESSION</a>
+            <a href="quiz.html">QUIZ</a>
+        </div>
+        <button class="btn-cta" onclick="location.href='login.html'">LOGIN</button>
+    </nav>
+
+    <div class="container">
+        <div class="table-container">
+            <div class="controls-side">
+                <h1>LONG<br>EXPRESSIONS</h1>
+                <p style="color: #7a7a7a;">Enter custom equations like <span style="color: var(--neon-lime)">(A & B) | !C</span></p>
+                
+                <div class="input-card">
+                    <input type="text" id="expInput" class="expression-input" value="(A & B) | !C" placeholder="Enter expression...">
+                    <button class="btn-generate" onclick="generateTruthTable()">Generate Truth Table</button>
+                    <div id="errorBox" class="error-msg">Invalid Expression</div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <table id="truthTable">
+                    <thead>
+                        <tr id="tableHead">
+                            </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateTruthTable() {
+            const input = document.getElementById('expInput').value;
+            const errorBox = document.getElementById('errorBox');
+            const head = document.getElementById('tableHead');
+            const body = document.getElementById('tableBody');
+            
+            try {
+                // 1. Identify variables (A, B, C, etc.)
+                const vars = [...new Set(input.match(/[A-Z]/g))].sort();
+                if (vars.length === 0) throw "No variables";
+
+                // 2. Prepare Headers
+                head.innerHTML = vars.map(v => `<th>${v}</th>`).join('') + `<th>Result</th>`;
+                
+                // 3. Generate Rows (2^n combinations)
+                let html = "";
+                const combinations = Math.pow(2, vars.length);
+
+                for (let i = 0; i < combinations; i++) {
+                    let values = {};
+                    let rowHtml = "";
+
+                    // Map bits of 'i' to variables
+                    vars.forEach((v, index) => {
+                        const val = (i >> (vars.length - 1 - index)) & 1;
+                        values[v] = val;
+                        rowHtml += `<td>${val}</td>`;
+                    });
+
+                    let evalExp = input
+                        .replace(/&/g, '&&')
+                        .replace(/\|/g, '||')
+                        .replace(/!/g, '!');
+                    
+
+                    vars.forEach(v => {
+                        evalExp = evalExp.replace(new RegExp(v, 'g'), values[v]);
+                    });
+
+                    const result = eval(evalExp) ? 1 : 0;
+                    rowHtml += `<td class="res-cell">${result}</td>`;
+                    html += `<tr>${rowHtml}</tr>`;
+                }
+
+                body.innerHTML = html;
+                errorBox.style.display = 'none';
+            } catch (e) {
+                errorBox.style.display = 'block';
+                console.error(e);
+            }
+        }
+
+        // Run once on load
+        window.onload = generateTruthTable;
+    </script>
+    
+</body>
+</html>

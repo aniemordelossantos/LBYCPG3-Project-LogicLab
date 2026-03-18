@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>LogicLab - Simulator</title>
+    <style>
+        :root {
+            --neon-lime: #ccff00;
+            --bg-dark: #0a0a0a;
+            --card-bg: #111111;
+        }
+
+        .sim-wrapper {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+            padding-top: 40px;
+        }
+
+        .sim-header {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .sim-header span {
+            color: var(--neon-lime);
+        }
+
+        .simulator-card {
+            background: var(--card-bg);
+            border: 1px solid #1a1a1a;
+            border-radius: 40px;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .logic-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            width: 100%;
+        }
+
+        .input-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-node label {
+            color: #7a7a7a;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .toggle-btn {
+            width: 80px;
+            height: 80px;
+            background: #000;
+            color: var(--neon-lime);
+            border: 2px solid #222;
+            border-radius: 20px;
+            font-size: 2rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn:hover {
+            border-color: var(--neon-lime);
+            box-shadow: 0 0 15px rgba(204, 255, 0, 0.2);
+        }
+
+        .gate-select {
+            background: #000;
+            color: white;
+            border: 2px solid #222; /* Thicker border for better visibility */
+            padding: 15px 45px 15px 25px; /* Added right padding for the custom arrow */
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            outline: none;
+            appearance: none; /* Removes the default browser arrow */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            
+            /* Custom Neon Arrow SVG */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23D1FF52' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 18px;
+        }
+
+        .gate-select:focus {
+            border-color: var(--neon-lime);
+            box-shadow: 0 0 15px rgba(204, 255, 0, 0.3);
+        }
+
+        .gate-select:hover {
+            border-color: #444;
+        }
+
+        .gate-select option {
+            background-color: #111;
+            color: white;
+            padding: 10px;
+        }
+
+        .result-display {
+            margin-top: 20px;
+            padding: 20px 40px;
+            background: #000;
+            border-radius: 100px;
+            border: 1px solid #1a1a1a;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #7a7a7a;
+        }
+
+        #res {
+            color: var(--neon-lime);
+            font-size: 2.2rem;
+            margin-left: 15px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="home.html" class="logo">LOGIC<span>LAB</span></a>
+        <div class="nav-links">
+            <a href="overview.html">KNOWLEDGE</a>
+            <a href="simulator.html" class="active">SIMULATOR</a>
+            <a href="table-gen.html">TABLE GEN</a>
+            <a href="expression-gen.html">EXPRESSION</a>
+            <a href="quiz.html">QUIZ</a>
+        </div>
+        <button class="btn-cta" onclick="location.href='login.html'">LOGIN</button>
+    </nav>
+
+    <div class="container">
+        <div class="sim-wrapper">
+            <h1 class="sim-header">LOGIC GATE <span>SIMULATOR</span></h1>
+            
+            <div class="simulator-card">
+                <div class="logic-row">
+                    <div class="input-node">
+                        <label>INPUT A</label>
+                        <button id="inA" class="toggle-btn" onclick="toggleInput('inA')">0</button>
+                    </div>
+
+                    <div class="input-node">
+                        <label>LOGIC GATE</label>
+                        <select id="gate" class="gate-select" onchange="runSim()">
+                            <option value="AND">AND</option>
+                            <option value="OR">OR</option>
+                            <option value="XOR">XOR</option>
+                            <option value="NAND">NAND</option>
+                            <option value="NOR">NOR</option>
+                            <option value="NOT">NOT</option>
+                            <option value="XNOR">XNOR</option>
+                        </select>
+                    </div>
+
+                    <div class="input-node">
+                        <label>INPUT B</label>
+                        <button id="inB" class="toggle-btn" onclick="toggleInput('inB')">0</button>
+                    </div>
+                </div>
+
+                <div class="result-display">
+                    OUTPUT: <span id="res">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleInput(id) {
+            const btn = document.getElementById(id);
+            btn.innerText = btn.innerText === '0' ? '1' : '0';
+            runSim();
+        }
+
+        function runSim() {
+            const a = parseInt(document.getElementById('inA').innerText);
+            const b = parseInt(document.getElementById('inB').innerText);
+            const gate = document.getElementById('gate').value;
+            const resElement = document.getElementById('res');
+            
+            let result = 0;
+
+            switch(gate) {
+                case 'AND': result = a & b; break;
+                case 'OR':  result = a | b; break;
+                case 'XOR': result = a ^ b; break;
+                case 'NAND': result = (a & b) ? 0 : 1; break;
+                case 'NOR': result = (a | b) ? 0 : 1; break;
+                case 'NOT': result = a ? 0 : 1; break;
+                case 'XNOR': result = (a ^ b) ? 0 : 1; break;
+                default: result = 0;
+            }
+
+            resElement.innerText = result;
+        }
+
+        // Initialize on load
+        window.onload = runSim;
+    </script>
+    
+</body>
+</html>

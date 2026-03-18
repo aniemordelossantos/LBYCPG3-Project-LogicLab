@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>LogicLab - Quiz</title>
+    <style>
+        :root {
+            --neon-lime: #ccff00;
+            --bg-dark: #0a0a0a;
+            --card-bg: #111111;
+            --border-muted: #222222;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: "Montserrat", sans-serif;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 80px); /* Adjust for nav height */
+        }
+
+        .quiz-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-muted);
+            border-radius: 40px;
+            width: 100%;
+            max-width: 800px;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            margin-bottom: 50px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--neon-lime);
+            width: 0%; /* Dynamic */
+            transition: width 0.4s ease;
+        }
+
+        /* Typography */
+        h1.assessment-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .assessment-sub {
+            color: #7a7a7a;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+
+        h2.question-text {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            text-align: left;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        /* Buttons */
+        .btn-start {
+            background: var(--neon-lime);
+            color: black;
+            border: none;
+            padding: 20px 50px;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-start:hover {
+            transform: scale(1.05);
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--border-muted);
+            color: white;
+            padding: 25px 30px;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover {
+            border-color: var(--neon-lime);
+            background: rgba(204, 255, 0, 0.05);
+        }
+
+        .option-btn.selected {
+            border-color: var(--neon-lime);
+        }
+
+        /* Hide logic */
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="login.html" class="logo">LOGIC<span>LAB</span></a>
+        <div class="nav-links">
+            <a href="overview.html">KNOWLEDGE</a>
+            <a href="simulator.html">SIMULATOR</a>
+            <a href="table-gen.html">TABLE GEN</a>
+            <a href="expression-gen.html">EXPRESSION</a>
+            <a href="quiz.html" class="active">QUIZ</a>
+        </div>
+        <button class="btn-cta" onclick="location.href='login.html'">LOGIN</button>
+    </nav>
+
+    <div class="container">
+        <div id="start-view" class="quiz-card">
+            <div class="progress-container"><div class="progress-bar" style="width: 0%"></div></div>
+            <h1 class="assessment-title">KNOWLEDGE ASSESSMENT</h1>
+            <p class="assessment-sub">Validate your proficiency in digital logic systems.</p>
+            <button class="btn-start" onclick="startQuiz()">Start Exam</button>
+        </div>
+
+        <div id="question-view" class="quiz-card hidden">
+            <div class="progress-container"><div class="progress-bar" id="current-progress" style="width: 35%"></div></div>
+            <h2 class="question-text">WHICH GATE OUTPUTS 1 ONLY IF INPUTS ARE DIFFERENT?</h2>
+            
+            <div id="options-container">
+                <button class="option-btn selected">XOR</button>
+                <button class="option-btn">AND</button>
+                <button class="option-btn">NOR</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startQuiz() {
+            document.getElementById('start-view').classList.add('hidden');
+            document.getElementById('question-view').classList.remove('hidden');
+            
+            // Set progress to match your second screenshot
+            document.getElementById('current-progress').style.width = '35%';
+        }
+    </script>
+    
+</body>
+</html>

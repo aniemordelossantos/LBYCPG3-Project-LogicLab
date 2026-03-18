@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>LogicLab - Knowledge Base</title>
+    <style>
+        :root {
+            --neon-lime: #ccff00;
+        }
+
+        .content-wrapper {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+            padding-top: 60px;
+        }
+
+        .section-header {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+            letter-spacing: -1px;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .section-header span {
+            color: var(--neon-lime);
+        }
+
+        .gate-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            width: 100%;
+        }
+
+        .gate-card {
+            background: #0f0f0f;
+            border: 1px solid #1a1a1a;
+            border-radius: 35px;
+            padding: 50px 40px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .gate-card:hover {
+            border-color: var(--neon-lime); /* Matches brand highlight */
+            transform: translateY(-5px);
+        }
+
+        .gate-card h3 {
+            font-size: 2rem;
+            margin: 0 0 15px 0;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .gate-description {
+            color: #7a7a7a; /* Muted text to make the formula pop */
+            font-size: 1.1rem;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .formula {
+            display: block;
+            margin-top: 15px;
+            color: #FF4DA6; /* Your signature pink formula color */
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="home.html" class="logo">LOGIC<span>LAB</span></a>
+        <div class="nav-links">
+            <a href="overview.html" class="active">KNOWLEDGE</a>
+            <a href="simulator.html">SIMULATOR</a>
+            <a href="table-gen.html">TABLE GEN</a>
+            <a href="expression-gen.html">EXPRESSION</a>
+            <a href="quiz.html">QUIZ</a>
+        </div>
+        <button class="btn-cta" onclick="location.href='login.html'">LOGIN</button>
+    </nav>
+
+    <div class="container" style="display: block;">
+        <div class="content-wrapper">
+            <h1 class="section-header">LOGIC <span>KNOWLEDGE BASE</span></h1>
+            
+            <div class="gate-grid">
+                <div class="gate-card">
+                    <h3>AND Gate</h3>
+                    <p class="gate-description">
+                        The output is high (1) only if both inputs are high.
+                        <span class="formula">Y = A • B</span>
+                    </p>
+                </div>
+
+                <div class="gate-card">
+                    <h3>OR Gate</h3>
+                    <p class="gate-description">
+                        The output is high if at least one input is high.
+                        <span class="formula">Y = A + B</span>
+                    </p>
+                </div>
+
+                <div class="gate-card">
+                    <h3>NAND Gate</h3>
+                    <p class="gate-description">
+                        Universal Gate. The output is the inverse of the AND gate.
+                        <span class="formula">Y = (A • B)'</span>
+                    </p>
+                </div>
+
+                <div class="gate-card">
+                    <h3>XOR Gate</h3>
+                    <p class="gate-description">
+                        Exclusive OR. Outputs high only if inputs are different.
+                        <span class="formula">Y = A ⊕ B</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>LogicLab - Expression Generator</title>
+    <style>
+        :root {
+            --neon-lime: #ccff00;
+            --border: #222;
+        }
+
+        .flex-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            gap: 50px;
+            margin: 50px auto;
+        }
+
+        .text-side { flex: 1; }
+        .text-side h1 {
+            font-size: 3.5rem;
+            line-height: 1;
+            margin: 0;
+            font-weight: 800;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .control-label {
+            color: #7a7a7a;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-top: 30px;
+            display: block;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .gate-btn {
+            background: transparent;
+            border: 1px solid #444;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .gate-btn:hover {
+            border-color: var(--neon-lime);
+            color: var(--neon-lime);
+        }
+
+        .gate-btn.reset-btn {
+            border-color: #ff4444;
+            color: #ff4444;
+        }
+
+        .gate-btn.reset-btn:hover {
+            background: #ff4444;
+            color: white;
+        }
+
+        .display-side { flex: 1; display: flex; justify-content: flex-end; }
+        .display-card {
+            background: #111111;
+            border-radius: 40px;
+            padding: 40px;
+            width: 100%;
+            max-width: 550px;
+            border: 1px solid var(--border);
+        }
+
+        .screen {
+            background: #000;
+            border-radius: 24px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--neon-lime);
+            font-weight: 700;
+            border: 1px solid #1a1a1a;
+            padding: 20px;
+            text-align: center;
+            word-break: break-all;
+        }
+
+        .history-note {
+            text-align: center;
+            color: #555;
+            margin-top: 15px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="home.html" class="logo">LOGIC<span>LAB</span></a>
+        <div class="nav-links">
+            <a href="overview.html">KNOWLEDGE</a>
+            <a href="simulator.html">SIMULATOR</a>
+            <a href="table-gen.html">TABLE GEN</a>
+            <a href="expression-gen.html" class="active">EXPRESSION</a>
+            <a href="quiz.html">QUIZ</a>
+        </div>
+        <button class="btn-cta" onclick="location.href='login.html'">LOGIN</button>
+    </nav>
+
+    <div class="container">
+        <div class="flex-wrapper">
+            <div class="text-side">
+                <h1>LOGIC EXPRESSION<br><span style="color: var(--neon-lime)">BUILDER</span></h1>
+                
+                <span class="control-label">Add a Gate to the Chain</span>
+                <div class="button-group">
+                    <button class="gate-btn" onclick="addGate('AND', '&')">AND</button>
+                    <button class="gate-btn" onclick="addGate('OR', '|')">OR</button>
+                    <button class="gate-btn" onclick="addGate('XOR', '^')">XOR</button>
+                    <button class="gate-btn" onclick="addGate('NAND', 'NAND')">NAND</button>
+                    <button class="gate-btn" onclick="applyNot()">NOT</button>
+                </div>
+
+                <span class="control-label">Actions</span>
+                <div class="button-group">
+                    <button class="gate-btn reset-btn" onclick="resetExp()">RESET</button>
+                </div>
+            </div>
+
+            <div class="display-side">
+                <div class="display-card">
+                    <span class="gate-label" style="display:block; text-align:center; font-weight:800; color:#7a7a7a; margin-bottom:20px;">BUILDER OUTPUT</span>
+                    <div class="screen" id="gateScreen">A</div>
+                    <div class="history-note" id="statusLine">Starting with input A</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let expression = "A";
+        let varIndex = 1; // Starts at B
+        const variables = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+
+        function addGate(name, symbol) {
+            if (varIndex >= variables.length) {
+                alert("Max inputs reached!");
+                return;
+            }
+
+            const nextVar = variables[varIndex];
+            
+            if (name === 'NAND') {
+                expression = `!(${expression} & ${nextVar})`;
+            } else {
+                expression = `(${expression} ${symbol} ${nextVar})`;
+            }
+
+            varIndex++;
+            updateDisplay(`Added ${name} gate with input ${nextVar}`);
+        }
+
+        function applyNot() {
+            // Wraps the entire existing expression in a NOT
+            expression = `!(${expression})`;
+            updateDisplay("Applied NOT to the whole expression");
+        }
+
+        function resetExp() {
+            expression = "A";
+            varIndex = 1;
+            updateDisplay("Reset to start");
+        }
+
+        function updateDisplay(status) {
+            const screen = document.getElementById('gateScreen');
+            screen.innerText = expression;
+            document.getElementById('statusLine').innerText = status;
+
+            // Auto-shrink text if the expression gets long
+            if (expression.length > 15) screen.style.fontSize = "1.8rem";
+            else if (expression.length > 25) screen.style.fontSize = "1.2rem";
+            else screen.style.fontSize = "2.5rem";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>LogicLab - Login</title>
+    <style>
+        :root {
+            --neon-lime: #ccff00;
+            --bg-dark: #0a0a0a;
+            --card-bg: #111111;
+            --border-muted: #222222;
+        }
+
+        .login-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 150px);
+            width: 100%;
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-muted);
+            border-radius: 40px;
+            padding: 60px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .login-card h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .login-card p {
+            color: #7a7a7a;
+            margin-bottom: 40px;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #7a7a7a;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            margin-left: 5px;
+            text-transform: uppercase;
+        }
+
+        .login-input {
+            width: 100%;
+            background: #000;
+            border: 1px solid var(--border-muted);
+            padding: 18px 20px;
+            border-radius: 15px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .login-input:focus {
+            border-color: var(--neon-lime);
+            box-shadow: 0 0 10px rgba(204, 255, 0, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            background: var(--neon-lime);
+            color: black;
+            border: none;
+            padding: 20px;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-login:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        .footer-links {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .footer-links a {
+            color: var(--neon-lime);
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="home.html" class="logo">LOGIC<span>LAB</span></a>
+        <div class="nav-links">
+            <a href="overview.html">KNOWLEDGE</a>
+            <a href="simulator.html">SIMULATOR</a>
+            <a href="table-gen.html">TABLE GEN</a>
+            <a href="expression-gen.html">EXPRESSION</a>
+            <a href="quiz.html">QUIZ</a>
+        </div>
+        <button class="btn-cta" style="border: 2px solid var(--neon-lime); background: transparent; color: var(--neon-lime);">LOGIN</button>
+    </nav>
+
+    <div class="container">
+        <div class="login-wrapper">
+            <div class="login-card">
+                <h1>WELCOME<span> BACK</span></h1>
+                <p>Access your logic laboratory</p>
+                
+                <form onsubmit="event.preventDefault(); location.href='overview.html';">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" class="login-input" placeholder="name@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="login-input" placeholder="••••••••" required>
+                    </div>
+
+                    <button type="submit" class="btn-login">Sign In</button>
+                </form>
+
+                <div class="footer-links">
+                    Don't have an account? <a href="#">Request Access</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
