@@ -36,12 +36,32 @@ app.post('/login', (req, res) => {
                 // Success! Redirect to overview
                 res.redirect('/overview.html');
             } else {
-                res.send("Invalid Password!");
+                res.send("<script>alert('Invalid Password!'); window.location.href='/login.html';</script>");
             }
         } else {
-            res.send("User not found!");
+            res.send("<script>alert('User Not Found!'); window.location.href='/login.html';</script>");
         }
     });
 });
+
+// Sign Up / Request Access Route
+app.post('/signup', (req, res) => {
+    const { FullName, email, password } = req.body;
+
+    // SQL query to insert new user into the database
+    const query = "INSERT INTO users (FullName, email, password) VALUES (?, ?, ?)";
+    
+    db.execute(query, [FullName, email, password], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send("Error creating account. Email might already exist.");
+        }
+        
+        // After successful insertion, send them back to login
+        res.send("<script>alert('Account Created Successfully!'); window.location.href='/login.html';</script>");
+    });
+});
+
+
 
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));
